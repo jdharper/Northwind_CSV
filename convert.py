@@ -30,7 +30,7 @@ def download(remoteUrl : str, localPath : str, /) -> None:
     it to localPath.  If there is an exception during the download it attempts
     to delete localPath to avoid a partial transfer.
 
-    This will print status and progress messages to sttdout.
+    This will print status and progress messages to stdout.
     """
     r = requests.get(remoteUrl, stream=True)
     if r.status_code != 200:
@@ -92,11 +92,11 @@ def convertTable(conn : Connection, tableName : str, csvPath : str, keepBlobs : 
     def filterRows(rows : Iterable[list[Any]]):
         if blobColumn is not None:
             if keepBlobs:
-                rows = [ [ attr if i != blobColumn else b64encode(attr).decode('utf-8') for i, attr in enumerate(row) ] 
-                         for row in rows ]
+                rows = ( [ attr if i != blobColumn else b64encode(attr).decode('utf-8') for i, attr in enumerate(row) ] 
+                         for row in rows )
             else:
-                rows = [ [ attr for i, attr in enumerate(row) if i != blobColumn ] 
-                         for row in rows ]
+                rows = ( [ attr for i, attr in enumerate(row) if i != blobColumn ] 
+                         for row in rows )
     
         rows = (  [  str(attr) if attr is not None else NULL_CONVERT 
                      for attr in row  ]
